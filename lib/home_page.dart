@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/my_reused_widgets.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,9 +10,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Smort Home System'),
-      ),
+      appBar: myAppbar(context),
+      drawer: myDrawer(context),
+      body: SingleChildScrollView(child: Text('This Works my dudes!')),
     );
   }
 }
