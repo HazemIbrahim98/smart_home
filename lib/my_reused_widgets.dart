@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-PreferredSizeWidget myAppbar(BuildContext context) {
+PreferredSizeWidget myAppbar(BuildContext context, String _text) {
   return AppBar(
     centerTitle: true,
-    //backgroundColor: Colors.black,
+    title: Text(_text),
     elevation: 0,
   );
 }
@@ -27,7 +27,33 @@ Widget myDrawer(BuildContext context) {
             Navigator.pushNamed(context, 'Dynamic Alarm Page');
           },
         ),
+        ListTile(
+          title: Text('Initialize IR Module'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, 'Init IR Page');
+          },
+        ),
       ],
+    ),
+  );
+}
+
+Widget myButton(
+    BuildContext context, String text, Function onpress, bool done) {
+  Color color = done ? Colors.green : Colors.red;
+  return Container(
+    child: ElevatedButton(
+      onPressed: onpress,
+      style: ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: 18.0,
+        ),
+      ),
     ),
   );
 }

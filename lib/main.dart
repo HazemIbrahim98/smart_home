@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dynamic_alarm_page.dart';
+import 'init_IR_page.dart';
 import 'home_page.dart';
 
 void main() {
@@ -13,7 +15,11 @@ class MyApp extends StatelessWidget {
       title: 'Adaptive Smart Home',
       theme: ThemeData(brightness: Brightness.dark, fontFamily: 'OpenSans'),
       initialRoute: 'Language Page',
-      routes: {'Home Page': (context) => SafeArea(child: HomePage())},
+      routes: {
+        'Home Page': (context) => SafeArea(child: HomePage()),
+        'Dynamic Alarm Page': (context) => SafeArea(child: DynamicAlarmPage()),
+        'Init IR Page': (context) => SafeArea(child: InfraredPage()),
+      },
       home: HomePage(),
     );
   }

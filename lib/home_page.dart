@@ -10,9 +10,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppbar(context),
+      appBar: myAppbar(context, 'Adaptive Smart Home System'),
       drawer: myDrawer(context),
-      body: SingleChildScrollView(child: Text('This Works my dudes!')),
+      body: SingleChildScrollView(
+          child: Center(child: Text('Welcome To Adaptive Smart Home!'))),
     );
   }
 }
