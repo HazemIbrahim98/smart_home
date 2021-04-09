@@ -46,13 +46,13 @@ class _InfraredPageState extends State<InfraredPage> {
               });
             }, myarr[0]),
             for (int i = 1; i < 10; i++)
-              myButton(context, 'Num ' + i.toString(), () {
+              myButton(context, i.toString(), () {
                 setState(() {
                   myarr[i] = true;
                 });
               }, myarr[i]),
             SizedBox(), //Gap to center 0
-            myButton(context, 'Num 0', () {
+            myButton(context, '0', () {
               setState(() {
                 myarr[10] = true;
               });
