@@ -109,7 +109,9 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       'alarm_notif',
       'alarm_notif',
       'Channel for Alarm notification',
+     icon: 'codex_logo',
       sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
     );
     var iOSPlatformChannelSpecifics = IOSNotificationDetails(
         sound: 'a_long_cold_sting.wav',
