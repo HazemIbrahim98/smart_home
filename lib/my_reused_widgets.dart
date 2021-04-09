@@ -49,20 +49,30 @@ Widget myDrawer(BuildContext context) {
 Widget myButton(
     BuildContext context, String text, Function onpress, bool done) {
   Color color = done ? Colors.green : Colors.red;
-  return Container(
-    child: ElevatedButton(
-      onPressed: onpress,
-      style: ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          letterSpacing: 1.5,
-          fontSize: 18.0,
+  if (text == 'Power')
+    return Container(
+      child: ElevatedButton(
+          onPressed: onpress,
+          style:
+              ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
+          child: Icon(Icons.power_settings_new)),
+    );
+  else
+    return Container(
+      child: ElevatedButton(
+        onPressed: onpress,
+        style:
+            ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+          ),
         ),
       ),
-    ),
-  );
+    );
 }
 
 void toast(String message) {
@@ -113,5 +123,3 @@ Widget myAddressField(BuildContext context, String text, Function mapCall) {
     ],
   );
 }
-
-

@@ -40,7 +40,7 @@ class _InfraredPageState extends State<InfraredPage> {
                 textScaleFactor: 1.5,
               )),
             ),
-            myButton(context, 'Power Button', () {
+            myButton(context, 'Power', () {
               setState(() {
                 myarr[0] = true;
               });
@@ -62,30 +62,3 @@ class _InfraredPageState extends State<InfraredPage> {
     );
   }
 }
-      
-      /*SingleChildScrollView(
-          child: Column(
-        children: [
-          Text("Select the key you'd like to enter"),
-          myButton(context, 'Power Button', () {
-            setState(() {
-              myarr[0] = true;
-            });
-          }, myarr[0]),
-          Container(
-            child: GridView.count(
-              crossAxisCount: 3,
-              children: [
-                Text("please"),
-                Text("please"),
-                Text("please"),
-                Text("please"),
-              ],
-            ),
-          ),
-        ],
-      )),
-    );
-  }
-}
-*/

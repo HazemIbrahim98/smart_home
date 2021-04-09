@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -6,6 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class DynamicAlarmPage extends StatefulWidget {
   @override
@@ -18,6 +21,8 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
 
   String fromText = 'From';
   String toText = 'To';
+
+  var parsedDate;
 
   Future fromMapCall() async {
     LocationResult result = await showLocationPicker(
@@ -33,14 +38,13 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       desiredAccuracy: LocationAccuracy.best,
     );
     if (result != null) {
-      fromText = result.address.split(',')[0];
+      fromText = 'From : ' + result.address.split(',')[0];
       fromPlaceID = result.placeId;
     }
     print("result = $result");
     setState(() {});
   }
 
-  var parsedDate;
   Future toMapCall() async {
     LocationResult result = await showLocationPicker(
       context,
@@ -55,7 +59,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       desiredAccuracy: LocationAccuracy.best,
     );
 
-    toText = result.address.split(',')[0];
+    toText = 'To : ' + result.address.split(',')[0];
     toPlaceID = result.placeId;
 
     print("result = $result");
@@ -66,9 +70,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
     //TODO: travelmode changeable
 
     try {
-
-      if(parsedDate == null)
-        throw(Exception);
+      if (parsedDate == null) throw (Exception);
       String url = Uri.encodeFull(
           "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=place_id:" +
               fromPlaceID +
@@ -81,11 +83,45 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       Uri apiurl = Uri.parse(url);
       http.Response obj = await http.get(apiurl);
       var data = jsonDecode(obj.body);
+      //final DateTime = DateTime.now();
 
       print(data.toString());
     } catch (e) {
-      toast("kosomak-- Some or all fields are empty or invalid");
+      toast("Some or all fields are empty or invalid");
     }
+  }
+
+  Future<void> _createNotificationChannel() async {
+    const AndroidNotificationChannel androidNotificationChannel =
+        AndroidNotificationChannel(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+    );
+    
+  }
+
+  Future<void> alarmTest() async {
+    _createNotificationChannel();
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'a_long_cold_sting.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0, 'Office', 'Wakeup', DateTime.now(), platformChannelSpecifics);
   }
 
   @override
@@ -120,6 +156,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
             },
           ),
           myButton(context, 'Calculate', onPressed, true),
+          myButton(context, 'Alarm', alarmTest, true),
         ],
       )),
     );
