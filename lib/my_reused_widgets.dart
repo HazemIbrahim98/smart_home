@@ -64,8 +64,8 @@ Widget myButton(BuildContext context, String text, Function onpress) {
   );
 }
 
-Widget myIRButton(
-    BuildContext context, String text, Function onpress, int state) {
+Widget myIRButton(BuildContext context, String text, int state,
+    Function(int) onpress, int index) {
   Color color;
   if (state == 0)
     color = Colors.red;
@@ -76,7 +76,9 @@ Widget myIRButton(
   if (text == 'Power')
     return Container(
       child: ElevatedButton(
-          onPressed: onpress,
+          onPressed: () {
+            onpress(index);
+          },
           style:
               ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
           child: Icon(Icons.power_settings_new)),
@@ -84,7 +86,9 @@ Widget myIRButton(
   else
     return Container(
       child: ElevatedButton(
-        onPressed: onpress,
+        onPressed: () {
+          onpress(index);
+        },
         style:
             ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
         child: Text(

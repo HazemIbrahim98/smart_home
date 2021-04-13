@@ -28,11 +28,6 @@ class _InfraredPageState extends State<InfraredPage> {
     subscribe("IR/Init");
   }
 
-  Future<void> sendMessages(String topic, String message) async {
-    mqttClient.publishMessage(
-        topic: topic, message: message, qosLevel: MqttQos.exactlyOnce);
-  }
-
   Future<void> subscribe(String topic) async {
     await mqttClient.subscribeToTopic(
         topic: topic,
@@ -49,10 +44,30 @@ class _InfraredPageState extends State<InfraredPage> {
   bool sendIRMessage(_topic, _message) {
     if (waittingForResponse == false) {
       waittingForResponse = true;
-      sendMessages(_topic, _message);
+      mqttClient.publishMessage(
+          topic: _topic, message: _message, qosLevel: MqttQos.exactlyOnce);
       return true;
     }
     return false;
+  }
+
+  int onButtonPressed(int _index) {
+    if (myarr[_index] == 0) {
+      String msg = '';
+      if (_index == 0)
+        msg = '10';
+      else if (_index == 10)
+        msg = '0';
+      else
+        msg = _index.toString();
+      if (sendIRMessage("IR/Init", msg)) {
+        index = _index;
+        setState(() {
+          myarr[_index]++;
+        });
+      }
+    }
+    return 1;
   }
 
   List<StaggeredTile> generateRandomTiles() {
@@ -85,38 +100,11 @@ class _InfraredPageState extends State<InfraredPage> {
                 textScaleFactor: 1.5,
               )),
             ),
-            myIRButton(context, 'Power', () {
-              if (myarr[0] == 0) {
-                if (sendIRMessage("IR/Init", "Power")) {
-                  index = 0;
-                  setState(() {
-                    myarr[0]++;
-                  });
-                }
-              }
-            }, myarr[0]),
+            myIRButton(context, 'Power', myarr[0], onButtonPressed, 0),
             for (int i = 1; i < 10; i++)
-              myIRButton(context, i.toString(), () {
-                if (myarr[i] == 0) {
-                  if (sendIRMessage("IR/Init", i.toString())) {
-                    index = i;
-                    setState(() {
-                      myarr[i]++;
-                    });
-                  }
-                }
-              }, myarr[i]),
+              myIRButton(context, i.toString(), myarr[i], onButtonPressed, i),
             SizedBox(), //Gap to center 0
-            myIRButton(context, '0', () {
-              if (myarr[10] == 0) {
-                if (sendIRMessage("IR/Init", '0')) {
-                  index = 10;
-                  setState(() {
-                    myarr[10]++;
-                  });
-                }
-              }
-            }, myarr[10]),
+            myIRButton(context, '0', myarr[10], onButtonPressed, 10),
           ],
           staggeredTiles: generateRandomTiles()),
     );
