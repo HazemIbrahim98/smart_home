@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mqtt_client/mqtt_client.dart';
+import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 
 class InfraredPage extends StatefulWidget {
   @override
@@ -9,7 +9,51 @@ class InfraredPage extends StatefulWidget {
 }
 
 class _InfraredPageState extends State<InfraredPage> {
-  List<bool> myarr = List.filled(11, false);
+  List<int> myarr = List.filled(11, 0);
+  bool waittingForResponse = false;
+  int index;
+  EzMqttClient mqttClient;
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  void _init() async {
+    mqttClient = EzMqttClient.nonSecure(
+        url: '192.168.1.109', clientId: Utils.uuid, enableLogs: true);
+
+    await mqttClient.connect(username: 'admin', password: 'admin');
+    subscribe("IR/Init");
+  }
+
+  Future<void> sendMessages(String topic, String message) async {
+    mqttClient.publishMessage(
+        topic: topic, message: message, qosLevel: MqttQos.exactlyOnce);
+  }
+
+  Future<void> subscribe(String topic) async {
+    await mqttClient.subscribeToTopic(
+        topic: topic,
+        onMessage: (topic, message) {
+          if (topic == 'IR/Init' && message == 'Done') {
+            setState(() {
+              if (index != null) myarr[index] = 2;
+            });
+            waittingForResponse = false;
+          }
+        });
+  }
+
+  bool sendIRMessage(_topic, _message) {
+    if (waittingForResponse == false) {
+      waittingForResponse = true;
+      sendMessages(_topic, _message);
+      return true;
+    }
+    return false;
+  }
 
   List<StaggeredTile> generateRandomTiles() {
     List<StaggeredTile> _staggeredTiles = [];
@@ -36,26 +80,42 @@ class _InfraredPageState extends State<InfraredPage> {
               padding: EdgeInsets.all(20),
               child: Center(
                   child: Text(
-                'Click a button and send the signal',
+                'Click a button and send the corresponding signal to the IR Module',
+                textAlign: TextAlign.center,
                 textScaleFactor: 1.5,
               )),
             ),
-            myButton(context, 'Power', () {
-              setState(() {
-                myarr[0] = true;
-              });
+            myIRButton(context, 'Power', () {
+              if (myarr[0] == 0) {
+                if (sendIRMessage("IR/Init", "Power")) {
+                  index = 0;
+                  setState(() {
+                    myarr[0]++;
+                  });
+                }
+              }
             }, myarr[0]),
             for (int i = 1; i < 10; i++)
-              myButton(context, i.toString(), () {
-                setState(() {
-                  myarr[i] = true;
-                });
+              myIRButton(context, i.toString(), () {
+                if (myarr[i] == 0) {
+                  if (sendIRMessage("IR/Init", i.toString())) {
+                    index = i;
+                    setState(() {
+                      myarr[i]++;
+                    });
+                  }
+                }
               }, myarr[i]),
             SizedBox(), //Gap to center 0
-            myButton(context, '0', () {
-              setState(() {
-                myarr[10] = true;
-              });
+            myIRButton(context, '0', () {
+              if (myarr[10] == 0) {
+                if (sendIRMessage("IR/Init", '0')) {
+                  index = 10;
+                  setState(() {
+                    myarr[10]++;
+                  });
+                }
+              }
             }, myarr[10]),
           ],
           staggeredTiles: generateRandomTiles()),

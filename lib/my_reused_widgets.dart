@@ -35,7 +35,7 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text('Display Web Page'),
+          title: Text('Home Assistant'),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushNamed(context, 'Webpage');
@@ -46,9 +46,33 @@ Widget myDrawer(BuildContext context) {
   );
 }
 
-Widget myButton(
-    BuildContext context, String text, Function onpress, bool done) {
-  Color color = done ? Colors.green : Colors.red;
+Widget myButton(BuildContext context, String text, Function onpress) {
+  return Container(
+    child: ElevatedButton(
+      onPressed: onpress,
+      style: ElevatedButton.styleFrom(
+          primary: Colors.red, onPrimary: Colors.black),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: 18.0,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget myIRButton(
+    BuildContext context, String text, Function onpress, int state) {
+  Color color;
+  if (state == 0)
+    color = Colors.red;
+  else if (state == 1)
+    color = Colors.yellow;
+  else
+    color = Colors.green;
   if (text == 'Power')
     return Container(
       child: ElevatedButton(

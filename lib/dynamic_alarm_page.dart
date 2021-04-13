@@ -98,7 +98,6 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       'alarm_notif',
       'Channel for Alarm notification',
     );
-    
   }
 
   Future<void> alarmTest() async {
@@ -109,7 +108,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       'alarm_notif',
       'alarm_notif',
       'Channel for Alarm notification',
-     icon: 'codex_logo',
+      icon: 'codex_logo',
       sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
       largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
     );
@@ -157,8 +156,8 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
               print(parsedDate);
             },
           ),
-          myButton(context, 'Calculate', onPressed, true),
-          myButton(context, 'Alarm', alarmTest, true),
+          myButton(context, 'Calculate', onPressed),
+          myButton(context, 'Alarm', alarmTest),
         ],
       )),
     );
