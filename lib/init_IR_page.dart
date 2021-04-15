@@ -100,11 +100,12 @@ class _InfraredPageState extends State<InfraredPage> {
                 textScaleFactor: 1.5,
               )),
             ),
-            myIRButton(context, 'Power', myarr[0], onButtonPressed, 0),
+            myIRInitButton(context, 'Power', myarr[0], onButtonPressed, 0),
             for (int i = 1; i < 10; i++)
-              myIRButton(context, i.toString(), myarr[i], onButtonPressed, i),
+              myIRInitButton(
+                  context, i.toString(), myarr[i], onButtonPressed, i),
             SizedBox(), //Gap to center 0
-            myIRButton(context, '0', myarr[10], onButtonPressed, 10),
+            myIRInitButton(context, '0', myarr[10], onButtonPressed, 10),
           ],
           staggeredTiles: generateRandomTiles()),
     );

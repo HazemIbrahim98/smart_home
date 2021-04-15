@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/remote_page.dart';
 import 'package:smart_home/webpage.dart';
 import 'dynamic_alarm_page.dart';
 import 'init_IR_page.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
         'Home Page': (context) => SafeArea(child: HomePage()),
         'Dynamic Alarm Page': (context) => SafeArea(child: DynamicAlarmPage()),
         'Init IR Page': (context) => SafeArea(child: InfraredPage()),
-        'Webpage': (context) => SafeArea(child: WebPage())
+        'Webpage': (context) => SafeArea(child: WebPage()),
+        'Send IR Page': (context) => SafeArea(child: RemotePage())
       },
       home: HomePage(),
     );

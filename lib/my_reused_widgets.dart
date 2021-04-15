@@ -24,6 +24,8 @@ Widget myDrawer(BuildContext context) {
           title: Text('Dynamic alarm'),
           onTap: () {
             Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
             Navigator.pushNamed(context, 'Dynamic Alarm Page');
           },
         ),
@@ -31,13 +33,29 @@ Widget myDrawer(BuildContext context) {
           title: Text('Initialize IR Module'),
           onTap: () {
             Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
             Navigator.pushNamed(context, 'Init IR Page');
+          },
+        ),
+        ListTile(
+          title: Text('Send IR Signal'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Send IR Page');
           },
         ),
         ListTile(
           title: Text('Home Assistant'),
           onTap: () {
             Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
             Navigator.pushNamed(context, 'Webpage');
           },
         ),
@@ -64,7 +82,7 @@ Widget myButton(BuildContext context, String text, Function onpress) {
   );
 }
 
-Widget myIRButton(BuildContext context, String text, int state,
+Widget myIRInitButton(BuildContext context, String text, int state,
     Function(int) onpress, int index) {
   Color color;
   if (state == 0)
@@ -91,6 +109,38 @@ Widget myIRButton(BuildContext context, String text, int state,
         },
         style:
             ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+          ),
+        ),
+      ),
+    );
+}
+
+Widget myIRSendButton(
+    BuildContext context, String text, Function(int) onpress, int index) {
+  if (text == 'Power')
+    return Container(
+      child: ElevatedButton(
+          onPressed: () {
+            onpress(index);
+          },
+          style: ElevatedButton.styleFrom(
+              primary: Colors.green, onPrimary: Colors.black),
+          child: Icon(Icons.power_settings_new)),
+    );
+  else
+    return Container(
+      child: ElevatedButton(
+        onPressed: () {
+          onpress(index);
+        },
+        style: ElevatedButton.styleFrom(
+            primary: Colors.green, onPrimary: Colors.black),
         child: Text(
           text,
           style: const TextStyle(
