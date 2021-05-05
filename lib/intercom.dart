@@ -10,7 +10,7 @@ class Intercom extends StatefulWidget {
 }
 
 class _IntercomState extends State<Intercom> {
-  final String urlToStreamVideo = 'rtsp://Kimo123:a7laproject@192.168.1.123:554/stream2';
+  final String urlToStreamVideo = 'rtsp://Kimo123:passwordgdeed@197.37.70.230:554/stream2';
   VlcPlayerController _videoPlayerController;
 
   Future<void> initializePlayer() async {}
