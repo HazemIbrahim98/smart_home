@@ -3,6 +3,8 @@ import 'package:smart_home/my_reused_widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 
+import 'constats.dart';
+
 class InfraredPage extends StatefulWidget {
   @override
   _InfraredPageState createState() => _InfraredPageState();
@@ -22,7 +24,7 @@ class _InfraredPageState extends State<InfraredPage> {
 
   void _init() async {
     mqttClient = EzMqttClient.nonSecure(
-        url: '192.168.1.109', clientId: Utils.uuid, enableLogs: true);
+        url: serverIP, clientId: Utils.uuid, enableLogs: false);
 
     await mqttClient.connect(username: 'admin', password: 'admin');
     subscribe("IR/Init");
