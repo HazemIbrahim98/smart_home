@@ -33,13 +33,6 @@ class _DoorPageState extends State<DoorPage> {
     _init();
   }
 
-  @override
-  Future<void> dispose() async {
-    super.dispose();
-    await _videoPlayerController.startRendererScanning();
-    await _videoPlayerController.dispose();
-  }
-
   void _init() async {
     mqttClient = EzMqttClient.nonSecure(
         url: serverIP, clientId: Utils.uuid, enableLogs: false);
@@ -69,7 +62,6 @@ class _DoorPageState extends State<DoorPage> {
     setState(() {
       doorOpen = true;
     });
-
     sendDoorState('1');
   }
 
