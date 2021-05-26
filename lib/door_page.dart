@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 
 import 'constats.dart';
@@ -10,12 +11,33 @@ class DoorPage extends StatefulWidget {
 }
 
 class _DoorPageState extends State<DoorPage> {
+  VlcPlayerController _videoPlayerController;
+  Future<void> initializePlayer() async {}
+
   EzMqttClient mqttClient;
   bool doorOpen = false;
   @override
   void initState() {
     super.initState();
+
+    _videoPlayerController = VlcPlayerController.network(
+      rtspIP,
+      hwAcc: HwAcc.FULL,
+      onInit: () {
+        _videoPlayerController.play();
+      },
+      autoPlay: true,
+      options: VlcPlayerOptions(),
+    );
+
     _init();
+  }
+
+  @override
+  Future<void> dispose() async {
+    super.dispose();
+    await _videoPlayerController.startRendererScanning();
+    await _videoPlayerController.dispose();
   }
 
   void _init() async {
@@ -56,9 +78,27 @@ class _DoorPageState extends State<DoorPage> {
     return Scaffold(
       appBar: myAppbar(context, 'Open House Door'),
       drawer: myDrawer(context),
-      body: Container(
-          child:
-              Center(child: myDoorButton(context, doorOpen, onButtonPressed))),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            children: [
+              Text("Door State"),
+              myDoorButton(context, doorOpen, onButtonPressed),
+            ],
+          ),
+          Column(
+            children: [
+              Text("Live Door View"),
+              VlcPlayer(
+                controller: _videoPlayerController,
+                aspectRatio: 16 / 9,
+                placeholder: Center(child: CircularProgressIndicator()),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

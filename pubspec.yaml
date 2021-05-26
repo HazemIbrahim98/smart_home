@@ -23,7 +23,9 @@ dependencies:
   android_alarm_manager: ^2.0.0
   flutter_local_notifications:
   flutter_ringtone_player: ^3.0.0
-
+  flutter_vlc_player: ^5.0.5
+  
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter

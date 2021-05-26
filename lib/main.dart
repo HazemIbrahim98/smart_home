@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         'Init IR Page': (context) => SafeArea(child: InfraredPage()),
         'Webpage': (context) => SafeArea(child: WebPage()),
         'Send IR Page': (context) => SafeArea(child: RemotePage()),
-        'Door Page': (context) => SafeArea(child: DoorPage())
+        'Door Page': (context) => SafeArea(child: DoorPage()),
       },
       home: HomePage(),
     );
