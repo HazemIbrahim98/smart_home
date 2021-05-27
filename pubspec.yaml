@@ -11,7 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
   ez_mqtt_client: ^0.0.2+2
   fluttertoast: ^7.1.6
@@ -21,7 +20,7 @@ dependencies:
   date_time_picker: "^2.0.0"
   flutter_webview_plugin: ^0.3.11
   android_alarm_manager: ^2.0.0
-  flutter_local_notifications:
+  flutter_local_notifications: ^4.0.1+2
   flutter_ringtone_player: ^3.0.0
   flutter_vlc_player: ^5.0.5
   
