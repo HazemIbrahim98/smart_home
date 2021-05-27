@@ -50,6 +50,16 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
+          title: Text('Open Door'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Door Page');
+          },
+        ),
+        ListTile(
           title: Text('Home Assistant'),
           onTap: () {
             Navigator.pop(context);
@@ -57,16 +67,6 @@ Widget myDrawer(BuildContext context) {
               Navigator.pop(context);
 
             Navigator.pushNamed(context, 'Webpage');
-          },
-        ),
-        ListTile(
-          title: Text('Intercom'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Intercom');
           },
         ),
       ],
@@ -129,6 +129,22 @@ Widget myIRInitButton(BuildContext context, String text, int state,
         ),
       ),
     );
+}
+
+Widget myDoorButton(BuildContext context, bool state, Function onpress) {
+  Color color;
+  if (state)
+    color = Colors.green;
+  else
+    color = Colors.red;
+
+  return Container(
+    child: ElevatedButton(
+        onPressed: onpress,
+        style:
+            ElevatedButton.styleFrom(primary: color, onPrimary: Colors.black),
+        child: Icon(Icons.power_settings_new)),
+  );
 }
 
 Widget myIRSendButton(

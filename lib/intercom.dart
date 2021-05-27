@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+
+import 'constats.dart';
 
 class Intercom extends StatefulWidget {
   @override
@@ -10,18 +9,16 @@ class Intercom extends StatefulWidget {
 }
 
 class _IntercomState extends State<Intercom> {
-  final String urlToStreamVideo = 'rtsp://Kimo123:passwordgdeed@197.37.70.230:554/stream2';
   VlcPlayerController _videoPlayerController;
 
   Future<void> initializePlayer() async {}
-  
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    _videoPlayerController= VlcPlayerController.network(
-      urlToStreamVideo,
+    _videoPlayerController = VlcPlayerController.network(
+      rtspIP,
       hwAcc: HwAcc.FULL,
       onInit: () {
         _videoPlayerController.play();
@@ -30,10 +27,9 @@ class _IntercomState extends State<Intercom> {
       options: VlcPlayerOptions(),
     );
   }
-  
+
   @override
   Future<void> dispose() async {
-    // TODO: implement dispose
     super.dispose();
     await _videoPlayerController.startRendererScanning();
     await _videoPlayerController.dispose();
@@ -46,7 +42,7 @@ class _IntercomState extends State<Intercom> {
       body: Center(
         child: VlcPlayer(
           controller: _videoPlayerController,
-          aspectRatio: 16/9,
+          aspectRatio: 16 / 9,
           placeholder: Center(child: CircularProgressIndicator()),
         ),
       ),

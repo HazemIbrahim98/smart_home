@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -8,7 +7,6 @@ import 'package:smart_home/my_reused_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class DynamicAlarmPage extends StatefulWidget {
   @override
@@ -71,6 +69,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
 
     try {
       if (parsedDate == null) throw (Exception);
+      print(parsedDate.toString());
       String url = Uri.encodeFull(
           "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=place_id:" +
               fromPlaceID +
@@ -83,9 +82,22 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       Uri apiurl = Uri.parse(url);
       http.Response obj = await http.get(apiurl);
       var data = jsonDecode(obj.body);
-      //final DateTime = DateTime.now();
+      //var data = json.decode(obj.body);
+      int time_secs;
+      try {
+        Map elements = data["rows"][0];
+        for (MapEntry<String, dynamic> me in elements.entries) {
+          time_secs = me.value[0]['duration_in_traffic']['value'];
+        }
+      } catch (i) {
+        toast(i.toString());
+      }
+      DateTime Alarm1 = DateTime.fromMillisecondsSinceEpoch(parsedDate);
+      Alarm1 = Alarm1.subtract(new Duration(seconds: time_secs));
+      toast("Alarm Set at : " + Alarm1.toString());
+      alarmTest(Alarm1);
 
-      print(data.toString());
+      print(data);
     } catch (e) {
       toast("Some or all fields are empty or invalid");
     }
@@ -100,7 +112,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
     );
   }
 
-  Future<void> alarmTest() async {
+  void alarmTest(DateTime Alarm) async {
     _createNotificationChannel();
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
@@ -121,8 +133,11 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
+    /*var cairo = tz.getLocation('Cairo')
+    tz.TZDateTime Date = new tz.TZDateTime(cairo, DateTime.now().year);*/
+
     await flutterLocalNotificationsPlugin.schedule(
-        0, 'Office', 'Wakeup', DateTime.now(), platformChannelSpecifics);
+        0, 'Alarm', 'Hey You', Alarm, platformChannelSpecifics);
   }
 
   @override
@@ -157,7 +172,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
             },
           ),
           myButton(context, 'Calculate', onPressed),
-          myButton(context, 'Alarm', alarmTest),
+          //myButton(context, 'Alarm', alarmTest),
         ],
       )),
     );
