@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 PreferredSizeWidget myAppbar(BuildContext context, String _text) {
@@ -226,4 +227,31 @@ Widget myAddressField(BuildContext context, String text, Function mapCall) {
       )
     ],
   );
+}
+
+void pushAlarm(DateTime scheduledTime) async {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'alarm_notif',
+    'alarm_notif',
+    'Channel for Alarm notification',
+    icon: 'codex_logo',
+    sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+    largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
+  );
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: 'a_long_cold_sting.wav',
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true);
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics);
+
+  /*var cairo = tz.getLocation('Cairo')
+    tz.TZDateTime Date = new tz.TZDateTime(cairo, DateTime.now().year);*/
+
+  await flutterLocalNotificationsPlugin.schedule(
+      0, 'Alarm', 'Hey You', scheduledTime, platformChannelSpecifics);
 }

@@ -6,7 +6,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class DynamicAlarmPage extends StatefulWidget {
   @override
@@ -65,8 +64,6 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   }
 
   Future<void> onPressed() async {
-    //TODO: travelmode changeable
-
     try {
       if (parsedDate == null) throw (Exception);
       print(parsedDate.toString());
@@ -83,61 +80,25 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       http.Response obj = await http.get(apiurl);
       var data = jsonDecode(obj.body);
       //var data = json.decode(obj.body);
-      int time_secs;
+      int timeSeconds;
       try {
         Map elements = data["rows"][0];
         for (MapEntry<String, dynamic> me in elements.entries) {
-          time_secs = me.value[0]['duration_in_traffic']['value'];
+          timeSeconds = me.value[0]['duration_in_traffic']['value'];
         }
       } catch (i) {
         toast(i.toString());
       }
-      DateTime Alarm1 = DateTime.fromMillisecondsSinceEpoch(parsedDate);
-      Alarm1 = Alarm1.subtract(new Duration(seconds: time_secs));
-      toast("Alarm Set at : " + Alarm1.toString());
-      alarmTest(Alarm1);
+      DateTime scheduledTime = DateTime.fromMillisecondsSinceEpoch(parsedDate);
+      scheduledTime =
+          scheduledTime.subtract(new Duration(seconds: timeSeconds));
+      toast("Alarm Set at : " + scheduledTime.toString());
+      pushAlarm(scheduledTime);
 
       print(data);
     } catch (e) {
       toast("Some or all fields are empty or invalid");
     }
-  }
-
-  Future<void> _createNotificationChannel() async {
-    const AndroidNotificationChannel androidNotificationChannel =
-        AndroidNotificationChannel(
-      'alarm_notif',
-      'alarm_notif',
-      'Channel for Alarm notification',
-    );
-  }
-
-  void alarmTest(DateTime Alarm) async {
-    _createNotificationChannel();
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'alarm_notif',
-      'alarm_notif',
-      'Channel for Alarm notification',
-      icon: 'codex_logo',
-      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-      largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
-    );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-        sound: 'a_long_cold_sting.wav',
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true);
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
-
-    /*var cairo = tz.getLocation('Cairo')
-    tz.TZDateTime Date = new tz.TZDateTime(cairo, DateTime.now().year);*/
-
-    await flutterLocalNotificationsPlugin.schedule(
-        0, 'Alarm', 'Hey You', Alarm, platformChannelSpecifics);
   }
 
   @override
@@ -172,7 +133,6 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
             },
           ),
           myButton(context, 'Calculate', onPressed),
-          //myButton(context, 'Alarm', alarmTest),
         ],
       )),
     );
