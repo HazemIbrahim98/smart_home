@@ -23,6 +23,7 @@ dependencies:
   flutter_local_notifications: ^4.0.1+2
   flutter_ringtone_player: ^3.0.0
   flutter_vlc_player: ^5.0.5
+  intl: ^0.17.0
   
     
 dev_dependencies:

@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:intl/intl.dart';
 
 class DynamicAlarmPage extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   String toText = 'To';
 
   var parsedDate;
+  var parsedTime;
 
   Future fromMapCall() async {
     LocationResult result = await showLocationPicker(
@@ -90,8 +92,10 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
         toast(i.toString());
       }
       DateTime scheduledTime = DateTime.fromMillisecondsSinceEpoch(parsedDate);
-      scheduledTime =
-          scheduledTime.subtract(new Duration(seconds: timeSeconds));
+      DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+      scheduledTime.subtract(new Duration(seconds: timeSeconds));
+      scheduledTime
+          .subtract(new Duration(hours: timez.hour, minutes: timez.minute));
       toast("Alarm Set at : " + scheduledTime.toString());
       pushAlarm(scheduledTime);
 
@@ -130,6 +134,30 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
               print(val.runtimeType.toString());
               parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
               print(parsedDate);
+            },
+          ),
+          DateTimePicker(
+            type: DateTimePickerType.time,
+            initialValue: '',
+            use24HourFormat: true,
+            timeLabelText: 'How much time expected till you can get ready',
+            onChanged: (val) {
+              print(val.runtimeType.toString());
+              parsedTime = val.toString();
+              DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+              print(timez.hour);
+              print(parsedTime);
+            },
+            validator: (val) {
+              print(val.runtimeType);
+              return null;
+            },
+            onSaved: (val) {
+              print(val.runtimeType.toString());
+              parsedTime = val;
+              DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+              print(timez.hour);
+              print(parsedTime);
             },
           ),
           myButton(context, 'Calculate', onPressed),
