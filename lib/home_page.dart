@@ -13,7 +13,14 @@ class _HomePageState extends State<HomePage> {
       appBar: myAppbar(context, 'Adaptive Smart Home System'),
       drawer: myDrawer(context),
       body: SingleChildScrollView(
-          child: Center(child: Text('Welcome To Adaptive Smart Home!'))),
+          child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Center(child: Text('Welcome To Adaptive Smart Home!')),
+        ],
+      )),
     );
   }
 }

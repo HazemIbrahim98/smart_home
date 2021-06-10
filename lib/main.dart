@@ -32,7 +32,7 @@ Future<void> subscribe(String topic) async {
 }
 
 void main() {
-  //initMQTT();
+  initMQTT();
   runApp(MyApp());
 }
 

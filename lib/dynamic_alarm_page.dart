@@ -93,8 +93,9 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       }
       DateTime scheduledTime = DateTime.fromMillisecondsSinceEpoch(parsedDate);
       DateTime timez = DateFormat("HH:mm").parse(parsedTime);
-      scheduledTime.subtract(new Duration(seconds: timeSeconds));
-      scheduledTime
+      scheduledTime =
+          scheduledTime.subtract(new Duration(seconds: timeSeconds));
+      scheduledTime = scheduledTime
           .subtract(new Duration(hours: timez.hour, minutes: timez.minute));
       toast("Alarm Set at : " + scheduledTime.toString());
       pushAlarm(scheduledTime);
