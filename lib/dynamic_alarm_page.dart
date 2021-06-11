@@ -98,7 +98,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       scheduledTime = scheduledTime
           .subtract(new Duration(hours: timez.hour, minutes: timez.minute));
       toast("Alarm Set at : " + scheduledTime.toString());
-      pushAlarm(scheduledTime);
+      pushAlarm(scheduledTime, false);
 
       print(data);
     } catch (e) {
@@ -112,57 +112,64 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       appBar: myAppbar(context, 'Dynamic alarm'),
       drawer: myDrawer(context),
       body: SingleChildScrollView(
-          child: Column(
-        children: [
-          myAddressField(context, fromText, fromMapCall),
-          myAddressField(context, toText, toMapCall),
-          DateTimePicker(
-            type: DateTimePickerType.dateTime,
-            initialValue: '',
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2100),
-            dateLabelText: 'Date',
-            onChanged: (val) {
-              print(val.runtimeType.toString());
-              parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
-              print(parsedDate);
-            },
-            validator: (val) {
-              print(val.runtimeType);
-              return null;
-            },
-            onSaved: (val) {
-              print(val.runtimeType.toString());
-              parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
-              print(parsedDate);
-            },
-          ),
-          DateTimePicker(
-            type: DateTimePickerType.time,
-            initialValue: '',
-            use24HourFormat: true,
-            timeLabelText: 'How much time expected till you can get ready',
-            onChanged: (val) {
-              print(val.runtimeType.toString());
-              parsedTime = val.toString();
-              DateTime timez = DateFormat("HH:mm").parse(parsedTime);
-              print(timez.hour);
-              print(parsedTime);
-            },
-            validator: (val) {
-              print(val.runtimeType);
-              return null;
-            },
-            onSaved: (val) {
-              print(val.runtimeType.toString());
-              parsedTime = val;
-              DateTime timez = DateFormat("HH:mm").parse(parsedTime);
-              print(timez.hour);
-              print(parsedTime);
-            },
-          ),
-          myButton(context, 'Calculate', onPressed),
-        ],
+          child: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(
+          children: [
+            myAddressField(context, fromText, fromMapCall),
+            myAddressField(context, toText, toMapCall),
+            DateTimePicker(
+              textAlign: TextAlign.center,
+              use24HourFormat: false,
+              type: DateTimePickerType.dateTime,
+              initialTime: TimeOfDay(hour: 0, minute: 0),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+              dateLabelText: 'Arrival Date',
+              onChanged: (val) {
+                print(val.runtimeType.toString());
+                parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
+                print(parsedDate);
+              },
+              validator: (val) {
+                print(val.runtimeType);
+                return null;
+              },
+              onSaved: (val) {
+                print(val.runtimeType.toString());
+                parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
+                print(parsedDate);
+              },
+            ),
+            DateTimePicker(
+              textAlign: TextAlign.center,
+              type: DateTimePickerType.time,
+              initialTime: TimeOfDay(hour: 0, minute: 0),
+              use24HourFormat: true,
+              timeLabelText: 'Time to get ready',
+              onChanged: (val) {
+                print(val.runtimeType.toString());
+                parsedTime = val.toString();
+                DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+
+                print(timez.hour);
+                print(parsedTime);
+              },
+              validator: (val) {
+                print(val.runtimeType);
+                return null;
+              },
+              onSaved: (val) {
+                print(val.runtimeType.toString());
+                parsedTime = val;
+                DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+                print(timez.hour);
+                print(parsedTime);
+              },
+            ),
+            myButton(context, 'Calculate', onPressed),
+          ],
+        ),
       )),
     );
   }

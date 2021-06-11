@@ -51,7 +51,7 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text('Open Door'),
+          title: Text('Front Door'),
           onTap: () {
             Navigator.pop(context);
             if (ModalRoute.of(context).settings.name != '/')
@@ -229,29 +229,56 @@ Widget myAddressField(BuildContext context, String text, Function mapCall) {
   );
 }
 
-void pushAlarm(DateTime scheduledTime) async {
+void pushAlarm(DateTime scheduledTime, bool alarm) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'alarm_notif',
-    'alarm_notif',
-    'Channel for Alarm notification',
-    icon: 'codex_logo',
-    sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-    largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
-  );
-  var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-      sound: 'a_long_cold_sting.wav',
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true);
-  var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics);
 
-  /*var cairo = tz.getLocation('Cairo')
-    tz.TZDateTime Date = new tz.TZDateTime(cairo, DateTime.now().year);*/
+  if (alarm) {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notify',
+      'alarm_notify',
+      'Channel for Alarm notification',
+      importance: Importance.max,
+      icon: 'alert',
+      sound: RawResourceAndroidNotificationSound('alert'),
+      largeIcon: DrawableResourceAndroidBitmap('alert'),
+    );
+    print(alarm);
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'alert.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
 
-  await flutterLocalNotificationsPlugin.schedule(
-      0, 'Alarm', 'Hey You', scheduledTime, platformChannelSpecifics);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0, 'WARNING!', 'Gas Detected', scheduledTime, platformChannelSpecifics);
+  } else {
+    print("got here");
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      importance: Importance.high,
+      icon: 'logo_black',
+      sound: RawResourceAndroidNotificationSound('alarm'),
+      largeIcon: DrawableResourceAndroidBitmap('logo_black'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'alarm.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0, 'Alarm', 'Good Morning :)', scheduledTime, platformChannelSpecifics);
+  }
 }

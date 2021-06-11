@@ -26,7 +26,7 @@ Future<void> subscribe(String topic) async {
       onMessage: (topic, message) {
         if (topic == topic) {
           toast("GAS DETECTED In " + message);
-          pushAlarm(DateTime.now());
+          pushAlarm(DateTime.now(), true);
         }
       });
 }
