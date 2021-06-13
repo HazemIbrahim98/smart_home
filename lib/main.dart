@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/curtains_page.dart';
 import 'package:smart_home/door_page.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:smart_home/remote_page.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         'Webpage': (context) => SafeArea(child: WebPage()),
         'Send IR Page': (context) => SafeArea(child: RemotePage()),
         'Door Page': (context) => SafeArea(child: DoorPage()),
+        'Curtains Page': (context) => SafeArea(child: CurtainsPage()),
       },
       home: HomePage(),
     );
