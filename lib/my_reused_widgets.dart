@@ -61,6 +61,16 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
+          title: Text('Curtains Control'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Curtains Page');
+          },
+        ),
+        ListTile(
           title: Text('Home Assistant'),
           onTap: () {
             Navigator.pop(context);
@@ -80,7 +90,7 @@ Widget myButton(BuildContext context, String text, Function onpress) {
     child: ElevatedButton(
       onPressed: onpress,
       style: ElevatedButton.styleFrom(
-          primary: Colors.red, onPrimary: Colors.black),
+          primary: Colors.green, onPrimary: Colors.black),
       child: Text(
         text,
         style: const TextStyle(
