@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_home/curtains_page.dart';
+import 'package:smart_home/person.dart';
 import 'package:smart_home/door_page.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:smart_home/remote_page.dart';
@@ -33,7 +34,7 @@ Future<void> subscribe(String topic) async {
 }
 
 void main() {
-  initMQTT();
+  //initMQTT();
   runApp(MyApp());
 }
 
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         'Send IR Page': (context) => SafeArea(child: RemotePage()),
         'Door Page': (context) => SafeArea(child: DoorPage()),
         'Curtains Page': (context) => SafeArea(child: CurtainsPage()),
+        'Person Page': (context) => SafeArea(child: PersonPage()),
       },
       home: HomePage(),
     );

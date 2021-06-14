@@ -26,6 +26,7 @@ dependencies:
   intl: ^0.17.0
   flutter_native_splash: ^0.3.0
   flutter_launcher_icons: "^0.8.0"
+  http:
 
     
 dev_dependencies:

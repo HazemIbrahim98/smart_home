@@ -80,6 +80,16 @@ Widget myDrawer(BuildContext context) {
             Navigator.pushNamed(context, 'Webpage');
           },
         ),
+        ListTile(
+          title: Text('Person Identifier'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Person Page');
+          },
+        ),
       ],
     ),
   );
