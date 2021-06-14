@@ -71,16 +71,6 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text('Home Assistant'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Webpage');
-          },
-        ),
-        ListTile(
           title: Text('Person Identifier'),
           onTap: () {
             Navigator.pop(context);
@@ -88,6 +78,16 @@ Widget myDrawer(BuildContext context) {
               Navigator.pop(context);
 
             Navigator.pushNamed(context, 'Person Page');
+          },
+        ),
+        ListTile(
+          title: Text('Home Assistant'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Webpage');
           },
         ),
       ],
@@ -99,6 +99,25 @@ Widget myButton(BuildContext context, String text, Function onpress) {
   return Container(
     child: ElevatedButton(
       onPressed: onpress,
+      style: ElevatedButton.styleFrom(
+          primary: Colors.green, onPrimary: Colors.black),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: 18.0,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget myIndexedButton(
+    BuildContext context, String text, Function onpress, int parameters) {
+  return Container(
+    child: ElevatedButton(
+      onPressed: () => {onpress(parameters)},
       style: ElevatedButton.styleFrom(
           primary: Colors.green, onPrimary: Colors.black),
       child: Text(
