@@ -58,27 +58,30 @@ class _RemotePageState extends State<RemotePage> {
     return Scaffold(
       appBar: myAppbar(context, 'Send IR Signal'),
       drawer: myDrawer(context),
-      body: StaggeredGridView.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 4.0,
-          crossAxisSpacing: 4.0,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Center(
-                  child: Text(
-                'Click a button to send to the reciever',
-                textAlign: TextAlign.center,
-                textScaleFactor: 1.5,
-              )),
-            ),
-            myIRSendButton(context, 'Power', onButtonPressed, 0),
-            for (int i = 1; i < 10; i++)
-              myIRSendButton(context, i.toString(), onButtonPressed, i),
-            SizedBox(), //Gap to center 0
-            myIRSendButton(context, '0', onButtonPressed, 10),
-          ],
-          staggeredTiles: generateRandomTiles()),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: StaggeredGridView.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
+            children: [
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Center(
+                    child: Text(
+                  'Click a button to send to the reciever',
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1.5,
+                )),
+              ),
+              myIRSendButton(context, 'Power', onButtonPressed, 0),
+              for (int i = 1; i < 10; i++)
+                myIRSendButton(context, i.toString(), onButtonPressed, i),
+              SizedBox(), //Gap to center 0
+              myIRSendButton(context, '0', onButtonPressed, 10),
+            ],
+            staggeredTiles: generateRandomTiles()),
+      ),
     );
   }
 }

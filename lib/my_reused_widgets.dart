@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 PreferredSizeWidget myAppbar(BuildContext context, String _text) {
@@ -50,13 +51,33 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text('Open Door'),
+          title: Text('Front Door'),
           onTap: () {
             Navigator.pop(context);
             if (ModalRoute.of(context).settings.name != '/')
               Navigator.pop(context);
 
             Navigator.pushNamed(context, 'Door Page');
+          },
+        ),
+        ListTile(
+          title: Text('Curtains Control'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Curtains Page');
+          },
+        ),
+        ListTile(
+          title: Text('Person Identifier'),
+          onTap: () {
+            Navigator.pop(context);
+            if (ModalRoute.of(context).settings.name != '/')
+              Navigator.pop(context);
+
+            Navigator.pushNamed(context, 'Person Page');
           },
         ),
         ListTile(
@@ -79,7 +100,26 @@ Widget myButton(BuildContext context, String text, Function onpress) {
     child: ElevatedButton(
       onPressed: onpress,
       style: ElevatedButton.styleFrom(
-          primary: Colors.red, onPrimary: Colors.black),
+          primary: Colors.green, onPrimary: Colors.black),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: 18.0,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget myIndexedButton(
+    BuildContext context, String text, Function onpress, int parameters) {
+  return Container(
+    child: ElevatedButton(
+      onPressed: () => {onpress(parameters)},
+      style: ElevatedButton.styleFrom(
+          primary: Colors.green, onPrimary: Colors.black),
       child: Text(
         text,
         style: const TextStyle(
@@ -226,4 +266,58 @@ Widget myAddressField(BuildContext context, String text, Function mapCall) {
       )
     ],
   );
+}
+
+void pushAlarm(DateTime scheduledTime, bool alarm) async {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  if (alarm) {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notify',
+      'alarm_notify',
+      'Channel for Alarm notification',
+      importance: Importance.max,
+      icon: 'alert',
+      sound: RawResourceAndroidNotificationSound('alert'),
+      largeIcon: DrawableResourceAndroidBitmap('alert'),
+    );
+    print(alarm);
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'alert.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0, 'WARNING!', 'Gas Detected', scheduledTime, platformChannelSpecifics);
+  } else {
+    print("got here");
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      importance: Importance.high,
+      icon: 'logo_black',
+      sound: RawResourceAndroidNotificationSound('alarm'),
+      largeIcon: DrawableResourceAndroidBitmap('logo_black'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'alarm.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0, 'Alarm', 'Good Morning :)', scheduledTime, platformChannelSpecifics);
+  }
 }

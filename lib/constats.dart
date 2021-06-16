@@ -1,2 +1,2 @@
-final serverIP = '192.168.1.16';
-final rtspIP = 'rtsp://192.168.1.13:8080/h264_pcm.sdp';
+final serverIP = '192.168.1.19';
+final rtspIP = 'http://192.168.1.11:8080/video';

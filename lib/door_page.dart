@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -23,13 +25,9 @@ class _DoorPageState extends State<DoorPage> {
     _videoPlayerController = VlcPlayerController.network(
       rtspIP,
       hwAcc: HwAcc.FULL,
-      onInit: () {
-        _videoPlayerController.play();
-      },
       autoPlay: true,
       options: VlcPlayerOptions(),
     );
-
     _init();
   }
 
@@ -68,28 +66,31 @@ class _DoorPageState extends State<DoorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppbar(context, 'Open House Door'),
+      appBar: myAppbar(context, 'Front Door'),
       drawer: myDrawer(context),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: [
-              Text("Door State"),
-              myDoorButton(context, doorOpen, onButtonPressed),
-            ],
-          ),
-          Column(
-            children: [
-              Text("Live Door View"),
-              VlcPlayer(
-                controller: _videoPlayerController,
-                aspectRatio: 16 / 9,
-                placeholder: Center(child: CircularProgressIndicator()),
-              ),
-            ],
-          )
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                Text("Door State"),
+                myDoorButton(context, doorOpen, onButtonPressed),
+              ],
+            ),
+            Column(
+              children: [
+                Text("Live Door View"),
+                VlcPlayer(
+                  controller: _videoPlayerController,
+                  aspectRatio: 16 / 9,
+                  placeholder: Center(child: CircularProgressIndicator()),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

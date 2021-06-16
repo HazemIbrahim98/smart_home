@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 
 class DynamicAlarmPage extends StatefulWidget {
   @override
@@ -21,6 +21,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   String toText = 'To';
 
   var parsedDate;
+  var parsedTime;
 
   Future fromMapCall() async {
     LocationResult result = await showLocationPicker(
@@ -65,8 +66,6 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   }
 
   Future<void> onPressed() async {
-    //TODO: travelmode changeable
-
     try {
       if (parsedDate == null) throw (Exception);
       print(parsedDate.toString());
@@ -83,61 +82,28 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       http.Response obj = await http.get(apiurl);
       var data = jsonDecode(obj.body);
       //var data = json.decode(obj.body);
-      int time_secs;
+      int timeSeconds;
       try {
         Map elements = data["rows"][0];
         for (MapEntry<String, dynamic> me in elements.entries) {
-          time_secs = me.value[0]['duration_in_traffic']['value'];
+          timeSeconds = me.value[0]['duration_in_traffic']['value'];
         }
       } catch (i) {
         toast(i.toString());
       }
-      DateTime Alarm1 = DateTime.fromMillisecondsSinceEpoch(parsedDate);
-      Alarm1 = Alarm1.subtract(new Duration(seconds: time_secs));
-      toast("Alarm Set at : " + Alarm1.toString());
-      alarmTest(Alarm1);
+      DateTime scheduledTime = DateTime.fromMillisecondsSinceEpoch(parsedDate);
+      DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+      scheduledTime =
+          scheduledTime.subtract(new Duration(seconds: timeSeconds));
+      scheduledTime = scheduledTime
+          .subtract(new Duration(hours: timez.hour, minutes: timez.minute));
+      toast("Alarm Set at : " + scheduledTime.toString());
+      pushAlarm(scheduledTime, false);
 
       print(data);
     } catch (e) {
       toast("Some or all fields are empty or invalid");
     }
-  }
-
-  Future<void> _createNotificationChannel() async {
-    const AndroidNotificationChannel androidNotificationChannel =
-        AndroidNotificationChannel(
-      'alarm_notif',
-      'alarm_notif',
-      'Channel for Alarm notification',
-    );
-  }
-
-  void alarmTest(DateTime Alarm) async {
-    _createNotificationChannel();
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'alarm_notif',
-      'alarm_notif',
-      'Channel for Alarm notification',
-      icon: 'codex_logo',
-      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-      largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
-    );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-        sound: 'a_long_cold_sting.wav',
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true);
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
-
-    /*var cairo = tz.getLocation('Cairo')
-    tz.TZDateTime Date = new tz.TZDateTime(cairo, DateTime.now().year);*/
-
-    await flutterLocalNotificationsPlugin.schedule(
-        0, 'Alarm', 'Hey You', Alarm, platformChannelSpecifics);
   }
 
   @override
@@ -146,34 +112,64 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       appBar: myAppbar(context, 'Dynamic alarm'),
       drawer: myDrawer(context),
       body: SingleChildScrollView(
-          child: Column(
-        children: [
-          myAddressField(context, fromText, fromMapCall),
-          myAddressField(context, toText, toMapCall),
-          DateTimePicker(
-            type: DateTimePickerType.dateTime,
-            initialValue: '',
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2100),
-            dateLabelText: 'Date',
-            onChanged: (val) {
-              print(val.runtimeType.toString());
-              parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
-              print(parsedDate);
-            },
-            validator: (val) {
-              print(val.runtimeType);
-              return null;
-            },
-            onSaved: (val) {
-              print(val.runtimeType.toString());
-              parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
-              print(parsedDate);
-            },
-          ),
-          myButton(context, 'Calculate', onPressed),
-          //myButton(context, 'Alarm', alarmTest),
-        ],
+          child: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(
+          children: [
+            myAddressField(context, fromText, fromMapCall),
+            myAddressField(context, toText, toMapCall),
+            DateTimePicker(
+              textAlign: TextAlign.center,
+              use24HourFormat: false,
+              type: DateTimePickerType.dateTime,
+              initialTime: TimeOfDay(hour: 0, minute: 0),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+              dateLabelText: 'Arrival Date',
+              onChanged: (val) {
+                print(val.runtimeType.toString());
+                parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
+                print(parsedDate);
+              },
+              validator: (val) {
+                print(val.runtimeType);
+                return null;
+              },
+              onSaved: (val) {
+                print(val.runtimeType.toString());
+                parsedDate = DateTime.parse(val).millisecondsSinceEpoch;
+                print(parsedDate);
+              },
+            ),
+            DateTimePicker(
+              textAlign: TextAlign.center,
+              type: DateTimePickerType.time,
+              initialTime: TimeOfDay(hour: 0, minute: 0),
+              use24HourFormat: true,
+              timeLabelText: 'Time to get ready',
+              onChanged: (val) {
+                print(val.runtimeType.toString());
+                parsedTime = val.toString();
+                DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+
+                print(timez.hour);
+                print(parsedTime);
+              },
+              validator: (val) {
+                print(val.runtimeType);
+                return null;
+              },
+              onSaved: (val) {
+                print(val.runtimeType.toString());
+                parsedTime = val;
+                DateTime timez = DateFormat("HH:mm").parse(parsedTime);
+                print(timez.hour);
+                print(parsedTime);
+              },
+            ),
+            myButton(context, 'Calculate', onPressed),
+          ],
+        ),
       )),
     );
   }
