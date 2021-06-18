@@ -104,7 +104,6 @@ class _InfraredPageState extends State<InfraredPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Initialize IR Module'),
-      drawer: myDrawer(context),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: StaggeredGridView.count(

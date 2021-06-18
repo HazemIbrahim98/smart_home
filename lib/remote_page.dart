@@ -57,7 +57,6 @@ class _RemotePageState extends State<RemotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Send IR Signal'),
-      drawer: myDrawer(context),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: StaggeredGridView.count(

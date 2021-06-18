@@ -110,7 +110,6 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Dynamic alarm'),
-      drawer: myDrawer(context),
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),

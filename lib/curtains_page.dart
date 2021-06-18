@@ -44,7 +44,6 @@ class _CurtainsPageState extends State<CurtainsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Curtains Control'),
-      drawer: myDrawer(context),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: Center(
