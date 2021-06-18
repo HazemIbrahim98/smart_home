@@ -18,7 +18,11 @@ void initMQTT() async {
   mqttClient = EzMqttClient.nonSecure(
       url: serverIP, clientId: Utils.uuid, enableLogs: false);
 
-  await mqttClient.connect(username: 'admin', password: 'admin');
+  try {
+    await mqttClient.connect(username: 'admin', password: 'admin');
+  } catch (e) {
+    toast("Couldn't connect to Server");
+  }
   subscribe('Gas');
 }
 
