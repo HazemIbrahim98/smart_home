@@ -11,25 +11,59 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Adaptive Smart Home'),
-      drawer: myDrawer(context),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 25,
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Color.fromRGBO(39, 39, 39, 1),
             ),
-            Center(child: Text('Welcome to Adaptive Smart Home!')),
-            SizedBox(
-              height: 25,
-            ),
-            Center(
-                child:
-                    Text('Where all your house needs are solved in one place')),
-          ],
-        ),
-      )),
+            child: Image.asset('assets/images/logo.jpg', scale: 1.2),
+          ),
+          ListTile(
+            title: Center(child: Text('Dynamic alarm')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Dynamic Alarm Page');
+            },
+          ),
+          ListTile(
+            title: Center(child: Text('Initialize IR Module')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Init IR Page');
+            },
+          ),
+          ListTile(
+            title: Center(child: Text('Send IR Signal')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Send IR Page');
+            },
+          ),
+          ListTile(
+            title: Center(child: Text('Front Door')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Door Page');
+            },
+          ),
+          ListTile(
+            title: Center(child: Text('Curtains Control')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Curtains Page');
+            },
+          ),
+          ListTile(
+            title: Center(child: Text('Person Identifier')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Person Page');
+            },
+          ),
+          ListTile(
+            title: Center(child: Text('Home Assistant')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Webpage');
+            },
+          ),
+        ],
+      ),
     );
   }
 }

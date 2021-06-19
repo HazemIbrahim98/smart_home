@@ -82,7 +82,6 @@ class _PersonPageState extends State<PersonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Person Identifier'),
-      drawer: myDrawer(context),
       body: Center(
         child: ListView(
           padding:

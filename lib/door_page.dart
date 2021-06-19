@@ -67,7 +67,6 @@ class _DoorPageState extends State<DoorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Front Door'),
-      drawer: myDrawer(context),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: Column(
