@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:smart_home/my_reused_widgets.dart';
@@ -46,15 +48,20 @@ class _CurtainsPageState extends State<CurtainsPage> {
       appBar: myAppbar(context, 'Curtains Control'),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              myButton(context, "Open", openCurtain),
-              myButton(context, "Stop", stopCurtain),
-              myButton(context, "Close", closeCurtain),
-            ],
-          ),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Text('Control your curtains with the mobile app'),
+            SizedBox(height: MediaQuery.of(context).size.height / 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                myButton(context, "Open", openCurtain),
+                myButton(context, "Stop", stopCurtain),
+                myButton(context, "Close", closeCurtain),
+              ],
+            ),
+          ],
         ),
       ),
     );

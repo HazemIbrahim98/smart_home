@@ -56,17 +56,15 @@ class _PersonPageState extends State<PersonPage> {
   }
 
   Widget getimages(index) {
-    if (images.isNotEmpty)
-      return Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              images[index],
-              myIndexedButton(context, "Approve", approvePerson, index),
-              myIndexedButton(context, "Delete", deletePerson, index),
-            ],
-          ));
-    return SizedBox();
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            images[index],
+            myIndexedButton(context, "Approve", approvePerson, index),
+            myIndexedButton(context, "Delete", deletePerson, index),
+          ],
+        ));
   }
 
   void approvePerson(int index) {
@@ -79,10 +77,9 @@ class _PersonPageState extends State<PersonPage> {
     requestPhotos();
   }
 
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: myAppbar(context, 'Person Identifier'),
-      body: Center(
+  Widget buildmhthing() {
+    if (images.isNotEmpty)
+      return Center(
         child: ListView(
           padding:
               EdgeInsets.only(top: MediaQuery.of(context).size.height / 4.5),
@@ -93,7 +90,13 @@ class _PersonPageState extends State<PersonPage> {
             for (var i = 0; i < images.length; i++) Center(child: getimages(i)),
           ],
         ),
-      ),
-    );
+      );
+    else
+      return Center(child: Text("Horray! No unknown images detected"));
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: myAppbar(context, 'Person Identifier'), body: buildmhthing());
   }
 }

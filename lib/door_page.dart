@@ -68,26 +68,27 @@ class _DoorPageState extends State<DoorPage> {
     return Scaffold(
       appBar: myAppbar(context, 'Front Door'),
       body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Column(
               children: [
-                Text("Door State"),
-                myDoorButton(context, doorOpen, onButtonPressed),
-              ],
-            ),
-            Column(
-              children: [
-                Text("Live Door View"),
                 VlcPlayer(
                   controller: _videoPlayerController,
                   aspectRatio: 16 / 9,
                   placeholder: Center(child: CircularProgressIndicator()),
                 ),
+                SizedBox(height: 10),
+                Text("Live Door View"),
               ],
-            )
+            ),
+            SizedBox(height: 200),
+            Column(
+              children: [
+                myDoorButton(context, doorOpen, onButtonPressed),
+                Text("Open Door"),
+              ],
+            ),
           ],
         ),
       ),
