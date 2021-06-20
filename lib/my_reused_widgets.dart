@@ -186,7 +186,7 @@ Widget myAddressField(BuildContext context, String text, Function mapCall) {
   );
 }
 
-void pushAlarm(DateTime scheduledTime, bool alarm) async {
+void pushAlarm(DateTime scheduledTime, bool alarm, String message) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -212,7 +212,7 @@ void pushAlarm(DateTime scheduledTime, bool alarm) async {
         iOS: iOSPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.schedule(
-        0, 'WARNING!', 'Gas Detected', scheduledTime, platformChannelSpecifics);
+        0, 'WARNING!', message, scheduledTime, platformChannelSpecifics);
   } else {
     print("got here");
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(

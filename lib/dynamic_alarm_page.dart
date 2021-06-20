@@ -98,7 +98,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
       scheduledTime = scheduledTime
           .subtract(new Duration(hours: timez.hour, minutes: timez.minute));
       toast("Alarm Set at : " + scheduledTime.toString());
-      pushAlarm(scheduledTime, false);
+      pushAlarm(scheduledTime, false, "");
 
       print(data);
     } catch (e) {
