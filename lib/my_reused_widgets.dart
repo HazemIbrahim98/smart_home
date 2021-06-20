@@ -242,14 +242,12 @@ void pushAlarm(DateTime scheduledTime, bool alarm, String message) async {
 
 Future<EzMqttClient> initMQTT() async {
   EzMqttClient mqttClient;
-
-  mqttClient = EzMqttClient.secure(
-      url: brokerIP,
-      clientId: Utils.uuid,
-      enableLogs: false,
-      port: brokerPORT,
-      secureCertificate:
-          await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
+  
+    mqttClient = EzMqttClient.nonSecure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT);
 
   await mqttClient.connect(username: brokerUsername, password: brokerPassword);
   return mqttClient;

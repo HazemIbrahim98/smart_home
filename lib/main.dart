@@ -17,13 +17,11 @@ EzMqttClient mqttClient;
 
 void initMQTT() async {
   try {
-    mqttClient = EzMqttClient.secure(
+    mqttClient = EzMqttClient.nonSecure(
         url: brokerIP,
         clientId: Utils.uuid,
         enableLogs: false,
-        port: brokerPORT,
-        secureCertificate:
-            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
+        port: brokerPORT);
 
     await mqttClient.connect(
         username: brokerUsername, password: brokerPassword);
@@ -41,13 +39,13 @@ Future<void> subscribe(String topic) async {
       topic: topic,
       onMessage: (topic, message) {
         if (topic == topic) {
-          if(topic == "Gas"){
+          if (topic == "Gas") {
             toast("GAS DETECTED In " + message);
             pushAlarm(DateTime.now(), true, "Gas Detected");
-          }
-          else{
+          } else {
             toast("Time to stand!");
-            pushAlarm(DateTime.now(), true, "Stand up and move a little for one minute");
+            pushAlarm(DateTime.now(), true,
+                "Stand up and move a little for one minute");
           }
         }
       });

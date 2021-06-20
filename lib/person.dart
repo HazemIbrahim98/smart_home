@@ -15,13 +15,11 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   void initMQTT() async {
-    mqttClient = EzMqttClient.secure(
+    mqttClient = EzMqttClient.nonSecure(
         url: brokerIP,
         clientId: Utils.uuid,
         enableLogs: false,
-        port: brokerPORT,
-        secureCertificate:
-            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
+        port: brokerPORT);
 
     await mqttClient.connect(
         username: brokerUsername, password: brokerPassword);

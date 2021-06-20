@@ -21,13 +21,11 @@ class _CurtainsPageState extends State<CurtainsPage> {
   }
 
   void _init() async {
-    mqttClient = EzMqttClient.secure(
+    mqttClient = EzMqttClient.nonSecure(
         url: brokerIP,
         clientId: Utils.uuid,
         enableLogs: false,
-        port: brokerPORT,
-        secureCertificate:
-            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
+        port: brokerPORT);
 
     await mqttClient.connect(
         username: brokerUsername, password: brokerPassword);
