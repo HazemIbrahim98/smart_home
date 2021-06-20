@@ -37,16 +37,21 @@ class _PersonPageState extends State<PersonPage> {
         topic: topic,
         onMessage: (topic, message) {
           if (topic == topic) {
-            message = message.replaceAll('\n', "");
-            message = message.trim();
+            if (message == 'Done')
+              requestPhotos();
+            else {
+              message = message.replaceAll('\n', "");
+              message = message.trim();
 
-            setState(() {
-              images.add(Image.memory(
-                base64Decode(message),
-                height: 250,
-                width: 250,
-              ));
-            });
+              setState(() {
+                images.add(Image.memory(
+                  base64Decode(message),
+                  height: 250,
+                  width: 250,
+                ));
+              });
+              print(images.length);
+            }
           }
         });
   }
@@ -58,7 +63,9 @@ class _PersonPageState extends State<PersonPage> {
   }
 
   void requestPhotos() {
-    images = [];
+    setState(() {
+      images = [];
+    });
     mqttClient.publishMessage(topic: "Door/requestPhotos", message: '1');
   }
 
@@ -76,12 +83,10 @@ class _PersonPageState extends State<PersonPage> {
 
   void approvePerson(int index) {
     mqttClient.publishMessage(topic: "Door/Approve", message: index.toString());
-    requestPhotos();
   }
 
   void deletePerson(int index) {
     mqttClient.publishMessage(topic: "Door/Delete", message: index.toString());
-    requestPhotos();
   }
 
   Widget buildmhthing() {
