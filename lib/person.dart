@@ -15,11 +15,19 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   void initMQTT() async {
-    mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+    mqttClient = EzMqttClient.secure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT,
+        secureCertificate:
+            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
+
     subscribe('Door/Photos');
+    requestPhotos();
   }
 
   List<Widget> images = [];
@@ -47,7 +55,6 @@ class _PersonPageState extends State<PersonPage> {
   void initState() {
     super.initState();
     initMQTT();
-    requestPhotos();
   }
 
   void requestPhotos() {

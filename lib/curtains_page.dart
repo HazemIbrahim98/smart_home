@@ -21,25 +21,31 @@ class _CurtainsPageState extends State<CurtainsPage> {
   }
 
   void _init() async {
-    mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+    mqttClient = EzMqttClient.secure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT,
+        secureCertificate:
+            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
   }
 
   void openCurtain() {
     mqttClient.publishMessage(
-        topic: "Curtains/open", message: '', qosLevel: MqttQos.exactlyOnce);
+        topic: "Curtains/open", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   void stopCurtain() {
     mqttClient.publishMessage(
-        topic: "Curtains/stop", message: '', qosLevel: MqttQos.exactlyOnce);
+        topic: "Curtains/stop", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   void closeCurtain() {
     mqttClient.publishMessage(
-        topic: "Curtains/close", message: '', qosLevel: MqttQos.exactlyOnce);
+        topic: "Curtains/close", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   @override

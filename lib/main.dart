@@ -16,15 +16,23 @@ import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 EzMqttClient mqttClient;
 
 void initMQTT() async {
-  mqttClient = EzMqttClient.nonSecure(
-      url: serverIP, clientId: Utils.uuid, enableLogs: false);
-
   try {
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    mqttClient = EzMqttClient.secure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT,
+        secureCertificate:
+            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
+
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
+
+    subscribe('Gas');
   } catch (e) {
+    print(e);
     toast("Couldn't connect to Server");
   }
-  subscribe('Gas');
 }
 
 Future<void> subscribe(String topic) async {
@@ -39,8 +47,8 @@ Future<void> subscribe(String topic) async {
 }
 
 void main() {
-  initMQTT();
   runApp(MyApp());
+  initMQTT();
 }
 
 class MyApp extends StatelessWidget {

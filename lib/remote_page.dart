@@ -20,10 +20,16 @@ class _RemotePageState extends State<RemotePage> {
   }
 
   void _init() async {
-    mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+    mqttClient = EzMqttClient.secure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT,
+        secureCertificate:
+            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
   }
 
   void sendIRMessage(_topic, _message) {
