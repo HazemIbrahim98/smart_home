@@ -20,10 +20,16 @@ class _RemotePageState extends State<RemotePage> {
   }
 
   void _init() async {
-    mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+    mqttClient = EzMqttClient.secure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT,
+        secureCertificate:
+            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
   }
 
   void sendIRMessage(_topic, _message) {
@@ -57,30 +63,27 @@ class _RemotePageState extends State<RemotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Send IR Signal'),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: StaggeredGridView.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-            children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Center(
-                    child: Text(
-                  'Click a button to send to the reciever',
-                  textAlign: TextAlign.center,
-                  textScaleFactor: 1.5,
-                )),
-              ),
-              myIRSendButton(context, 'Power', onButtonPressed, 0),
-              for (int i = 1; i < 10; i++)
-                myIRSendButton(context, i.toString(), onButtonPressed, i),
-              SizedBox(), //Gap to center 0
-              myIRSendButton(context, '0', onButtonPressed, 10),
-            ],
-            staggeredTiles: generateRandomTiles()),
-      ),
+      body: StaggeredGridView.count(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          crossAxisCount: 3,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+          children: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Center(
+                  child: Text(
+                'Click a button to emulate your actual remote.',
+                textAlign: TextAlign.center,
+              )),
+            ),
+            myIRSendButton(context, 'Power', onButtonPressed, 0),
+            for (int i = 1; i < 10; i++)
+              myIRSendButton(context, i.toString(), onButtonPressed, i),
+            SizedBox(), //Gap to center 0
+            myIRSendButton(context, '0', onButtonPressed, 10),
+          ],
+          staggeredTiles: generateRandomTiles()),
     );
   }
 }

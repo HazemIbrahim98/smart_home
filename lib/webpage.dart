@@ -12,7 +12,7 @@ class _WebPageState extends State<WebPage> {
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
-      url: "http://" + serverIP + ":8123",
+      url: serverIP,
       appBar: new AppBar(
         title: new Text("Home Assistant"),
       ),

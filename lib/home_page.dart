@@ -12,7 +12,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: myAppbar(context, 'Adaptive Smart Home'),
       body: ListView(
-        padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
@@ -27,15 +26,9 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           ListTile(
-            title: Center(child: Text('Initialize IR Module')),
+            title: Center(child: Text('IR Module')),
             onTap: () {
-              Navigator.pushNamed(context, 'Init IR Page');
-            },
-          ),
-          ListTile(
-            title: Center(child: Text('Send IR Signal')),
-            onTap: () {
-              Navigator.pushNamed(context, 'Send IR Page');
+              Navigator.pushNamed(context, 'IR Page');
             },
           ),
           ListTile(

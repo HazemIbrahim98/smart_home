@@ -1,6 +1,9 @@
+import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'constats.dart';
 
 PreferredSizeWidget myAppbar(BuildContext context, String _text) {
   return AppBar(
@@ -235,4 +238,19 @@ void pushAlarm(DateTime scheduledTime, bool alarm) async {
     await flutterLocalNotificationsPlugin.schedule(
         0, 'Alarm', 'Good Morning :)', scheduledTime, platformChannelSpecifics);
   }
+}
+
+Future<EzMqttClient> initMQTT() async {
+  EzMqttClient mqttClient;
+
+  mqttClient = EzMqttClient.secure(
+      url: brokerIP,
+      clientId: Utils.uuid,
+      enableLogs: false,
+      port: brokerPORT,
+      secureCertificate:
+          await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
+
+  await mqttClient.connect(username: brokerUsername, password: brokerPassword);
+  return mqttClient;
 }

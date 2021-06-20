@@ -32,10 +32,17 @@ class _DoorPageState extends State<DoorPage> {
   }
 
   void _init() async {
-    mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+    mqttClient = EzMqttClient.secure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT,
+        secureCertificate:
+            await Utils.getFileFromAssets("assets/trustid-x3-root.pem"));
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
+
     subscribe("Door/State");
   }
 
@@ -68,26 +75,27 @@ class _DoorPageState extends State<DoorPage> {
     return Scaffold(
       appBar: myAppbar(context, 'Front Door'),
       body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Column(
               children: [
-                Text("Door State"),
-                myDoorButton(context, doorOpen, onButtonPressed),
-              ],
-            ),
-            Column(
-              children: [
-                Text("Live Door View"),
                 VlcPlayer(
                   controller: _videoPlayerController,
                   aspectRatio: 16 / 9,
                   placeholder: Center(child: CircularProgressIndicator()),
                 ),
+                SizedBox(height: 10),
+                Text("Live Door View"),
               ],
-            )
+            ),
+            SizedBox(height: 200),
+            Column(
+              children: [
+                myDoorButton(context, doorOpen, onButtonPressed),
+                Text("Open Door"),
+              ],
+            ),
           ],
         ),
       ),

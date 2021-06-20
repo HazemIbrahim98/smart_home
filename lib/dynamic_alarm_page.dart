@@ -115,6 +115,11 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: Column(
           children: [
+            SizedBox(height: 20),
+            Text(
+              'Set your morning alarm in a clever way!\nOur system calculates the time needed based on predicted traffic.',
+              textAlign: TextAlign.center,
+            ),
             myAddressField(context, fromText, fromMapCall),
             myAddressField(context, toText, toMapCall),
             DateTimePicker(
@@ -166,7 +171,8 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
                 print(parsedTime);
               },
             ),
-            myButton(context, 'Calculate', onPressed),
+            SizedBox(height: 20),
+            myButton(context, 'Set Alarm', onPressed),
           ],
         ),
       )),
