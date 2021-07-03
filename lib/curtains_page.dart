@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:smart_home/my_reused_widgets.dart';

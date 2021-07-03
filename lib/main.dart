@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smart_home/curtains_page.dart';
+import 'package:smart_home/door_All_page.dart';
 import 'package:smart_home/ir_Page.dart';
 import 'package:smart_home/person.dart';
 import 'package:smart_home/door_page.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:smart_home/remote_page.dart';
 import 'package:smart_home/webpage.dart';
+import 'change_password_page.dart';
 import 'constats.dart';
 import 'dynamic_alarm_page.dart';
 import 'init_IR_page.dart';
@@ -74,6 +76,9 @@ class MyApp extends StatelessWidget {
         'Curtains Page': (context) => SafeArea(child: CurtainsPage()),
         'Person Page': (context) => SafeArea(child: PersonPage()),
         'IR Page': (context) => SafeArea(child: IrPage()),
+        'Door All Page': (context) => SafeArea(child: DoorAllPage()),
+        'Change Password Page': (context) =>
+            SafeArea(child: ChangePasswordPage()),
       },
       home: HomePage(),
     );

@@ -34,19 +34,13 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             title: Center(child: Text('Front Door')),
             onTap: () {
-              Navigator.pushNamed(context, 'Door Page');
+              Navigator.pushNamed(context, 'Door All Page');
             },
           ),
           ListTile(
             title: Center(child: Text('Curtains Control')),
             onTap: () {
               Navigator.pushNamed(context, 'Curtains Page');
-            },
-          ),
-          ListTile(
-            title: Center(child: Text('Person Identifier')),
-            onTap: () {
-              Navigator.pushNamed(context, 'Person Page');
             },
           ),
           ListTile(
