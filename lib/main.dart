@@ -1,18 +1,21 @@
-import 'package:flutter/material.dart';
-import 'package:smart_home/curtains_page.dart';
-import 'package:smart_home/door_All_page.dart';
-import 'package:smart_home/ir_Page.dart';
-import 'package:smart_home/person.dart';
-import 'package:smart_home/door_page.dart';
-import 'package:smart_home/my_reused_widgets.dart';
-import 'package:smart_home/remote_page.dart';
-import 'package:smart_home/webpage.dart';
-import 'change_password_page.dart';
-import 'constats.dart';
-import 'dynamic_alarm_page.dart';
-import 'init_IR_page.dart';
-import 'home_page.dart';
+import 'package:smart_home/Door/change_password_page.dart';
+import 'package:smart_home/Door/door_All_page.dart';
+import 'package:smart_home/Door/door_page.dart';
+import 'package:smart_home/Door/person.dart';
 
+import 'package:smart_home/IR/remote_page.dart';
+import 'package:smart_home/IR/init_IR_page.dart';
+import 'package:smart_home/IR/ir_Page.dart';
+
+import 'package:smart_home/home_page.dart';
+import 'package:smart_home/curtains_page.dart';
+import 'package:smart_home/dynamic_alarm_page.dart';
+import 'package:smart_home/webpage.dart';
+
+import 'package:smart_home/my_reused_widgets.dart';
+import 'package:smart_home/constats.dart';
+
+import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 
 EzMqttClient mqttClient;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/constats.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 
-import 'constats.dart';
 
 class InfraredPage extends StatefulWidget {
   @override

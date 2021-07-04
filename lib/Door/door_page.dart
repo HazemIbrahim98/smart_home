@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:smart_home/constats.dart';
 import 'package:smart_home/my_reused_widgets.dart';
-
-import 'constats.dart';
 
 class DoorPage extends StatefulWidget {
   @override
@@ -44,18 +43,21 @@ class _DoorPageState extends State<DoorPage> {
     subscribe("Door/State");
   }
 
-  void sendDoorState(_message) {
+  void openDoor() {
     mqttClient.publishMessage(
-        topic: "Door/State", message: _message, qosLevel: MqttQos.exactlyOnce);
+        topic: "Door/Open", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   Future<void> subscribe(String topic) async {
     await mqttClient.subscribeToTopic(
         topic: topic,
         onMessage: (topic, message) {
-          if (topic == "Door/State" && message == "0") {
+          if (topic == "Door/State") {
             setState(() {
-              doorOpen = false;
+              if (message == '1')
+                doorOpen = true;
+              else
+                doorOpen = false;
             });
           }
         });
@@ -65,7 +67,7 @@ class _DoorPageState extends State<DoorPage> {
     setState(() {
       doorOpen = true;
     });
-    sendDoorState('1');
+    openDoor();
   }
 
   @override
