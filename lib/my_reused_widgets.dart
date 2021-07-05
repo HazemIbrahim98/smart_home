@@ -1,97 +1,15 @@
+import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'constats.dart';
 
 PreferredSizeWidget myAppbar(BuildContext context, String _text) {
   return AppBar(
     centerTitle: true,
     title: Text(_text),
     elevation: 0,
-  );
-}
-
-Widget myDrawer(BuildContext context) {
-  return Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(39, 39, 39, 1),
-          ),
-          child: Image.asset('assets/images/logo.jpg', scale: 1.2),
-        ),
-        ListTile(
-          title: Text('Dynamic alarm'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-            Navigator.pushNamed(context, 'Dynamic Alarm Page');
-          },
-        ),
-        ListTile(
-          title: Text('Initialize IR Module'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Init IR Page');
-          },
-        ),
-        ListTile(
-          title: Text('Send IR Signal'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Send IR Page');
-          },
-        ),
-        ListTile(
-          title: Text('Front Door'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Door Page');
-          },
-        ),
-        ListTile(
-          title: Text('Curtains Control'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Curtains Page');
-          },
-        ),
-        ListTile(
-          title: Text('Person Identifier'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Person Page');
-          },
-        ),
-        ListTile(
-          title: Text('Home Assistant'),
-          onTap: () {
-            Navigator.pop(context);
-            if (ModalRoute.of(context).settings.name != '/')
-              Navigator.pop(context);
-
-            Navigator.pushNamed(context, 'Webpage');
-          },
-        ),
-      ],
-    ),
   );
 }
 
@@ -268,7 +186,7 @@ Widget myAddressField(BuildContext context, String text, Function mapCall) {
   );
 }
 
-void pushAlarm(DateTime scheduledTime, bool alarm) async {
+void pushAlarm(DateTime scheduledTime, bool alarm, String message) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -294,7 +212,7 @@ void pushAlarm(DateTime scheduledTime, bool alarm) async {
         iOS: iOSPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.schedule(
-        0, 'WARNING!', 'Gas Detected', scheduledTime, platformChannelSpecifics);
+        0, 'WARNING!', message, scheduledTime, platformChannelSpecifics);
   } else {
     print("got here");
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -320,4 +238,17 @@ void pushAlarm(DateTime scheduledTime, bool alarm) async {
     await flutterLocalNotificationsPlugin.schedule(
         0, 'Alarm', 'Good Morning :)', scheduledTime, platformChannelSpecifics);
   }
+}
+
+Future<EzMqttClient> initMQTT() async {
+  EzMqttClient mqttClient;
+  
+    mqttClient = EzMqttClient.nonSecure(
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT);
+
+  await mqttClient.connect(username: brokerUsername, password: brokerPassword);
+  return mqttClient;
 }

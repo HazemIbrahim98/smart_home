@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:smart_home/constats.dart';
 import 'package:smart_home/my_reused_widgets.dart';
-
-import 'constats.dart';
 
 class DoorPage extends StatefulWidget {
   @override
@@ -33,24 +32,32 @@ class _DoorPageState extends State<DoorPage> {
 
   void _init() async {
     mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT);
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
+
     subscribe("Door/State");
   }
 
-  void sendDoorState(_message) {
+  void openDoor() {
     mqttClient.publishMessage(
-        topic: "Door/State", message: _message, qosLevel: MqttQos.exactlyOnce);
+        topic: "Door/Open", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   Future<void> subscribe(String topic) async {
     await mqttClient.subscribeToTopic(
         topic: topic,
         onMessage: (topic, message) {
-          if (topic == "Door/State" && message == "0") {
+          if (topic == "Door/State") {
             setState(() {
-              doorOpen = false;
+              if (message == '1')
+                doorOpen = true;
+              else
+                doorOpen = false;
             });
           }
         });
@@ -60,35 +67,35 @@ class _DoorPageState extends State<DoorPage> {
     setState(() {
       doorOpen = true;
     });
-    sendDoorState('1');
+    openDoor();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Front Door'),
-      drawer: myDrawer(context),
       body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Column(
               children: [
-                Text("Door State"),
-                myDoorButton(context, doorOpen, onButtonPressed),
-              ],
-            ),
-            Column(
-              children: [
-                Text("Live Door View"),
                 VlcPlayer(
                   controller: _videoPlayerController,
                   aspectRatio: 16 / 9,
                   placeholder: Center(child: CircularProgressIndicator()),
                 ),
+                SizedBox(height: 10),
+                Text("Live Door View"),
               ],
-            )
+            ),
+            SizedBox(height: 200),
+            Column(
+              children: [
+                myDoorButton(context, doorOpen, onButtonPressed),
+                Text("Open Door"),
+              ],
+            ),
           ],
         ),
       ),

@@ -20,42 +20,50 @@ class _CurtainsPageState extends State<CurtainsPage> {
 
   void _init() async {
     mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT);
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
   }
 
   void openCurtain() {
     mqttClient.publishMessage(
-        topic: "Curtains/open", message: '', qosLevel: MqttQos.exactlyOnce);
+        topic: "Curtains/open", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   void stopCurtain() {
     mqttClient.publishMessage(
-        topic: "Curtains/stop", message: '', qosLevel: MqttQos.exactlyOnce);
+        topic: "Curtains/stop", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   void closeCurtain() {
     mqttClient.publishMessage(
-        topic: "Curtains/close", message: '', qosLevel: MqttQos.exactlyOnce);
+        topic: "Curtains/close", message: '1', qosLevel: MqttQos.exactlyOnce);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Curtains Control'),
-      drawer: myDrawer(context),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              myButton(context, "Open", openCurtain),
-              myButton(context, "Stop", stopCurtain),
-              myButton(context, "Close", closeCurtain),
-            ],
-          ),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Text('Control your curtains with the mobile app'),
+            SizedBox(height: MediaQuery.of(context).size.height / 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                myButton(context, "Open", openCurtain),
+                myButton(context, "Stop", stopCurtain),
+                myButton(context, "Close", closeCurtain),
+              ],
+            ),
+          ],
         ),
       ),
     );

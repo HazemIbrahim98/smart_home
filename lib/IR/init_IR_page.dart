@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/constats.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:ez_mqtt_client/ez_mqtt_client.dart';
 
-import 'constats.dart';
 
 class InfraredPage extends StatefulWidget {
   @override
@@ -24,9 +24,14 @@ class _InfraredPageState extends State<InfraredPage> {
 
   void _init() async {
     mqttClient = EzMqttClient.nonSecure(
-        url: serverIP, clientId: Utils.uuid, enableLogs: false);
+        url: brokerIP,
+        clientId: Utils.uuid,
+        enableLogs: false,
+        port: brokerPORT);
 
-    await mqttClient.connect(username: 'admin', password: 'admin');
+    await mqttClient.connect(
+        username: brokerUsername, password: brokerPassword);
+
     subscribe("IR/Init");
   }
 
@@ -85,9 +90,7 @@ class _InfraredPageState extends State<InfraredPage> {
       _staggeredTiles.add(new StaggeredTile.fit(1));
     }
     _staggeredTiles.add(new StaggeredTile.fit(3));
-    _staggeredTiles.add(new StaggeredTile.fit(1));
-    _staggeredTiles.add(new StaggeredTile.fit(1));
-    _staggeredTiles.add(new StaggeredTile.fit(1));
+    _staggeredTiles.add(new StaggeredTile.fit(3));
     return _staggeredTiles;
   }
 
@@ -95,45 +98,34 @@ class _InfraredPageState extends State<InfraredPage> {
     sendMQTT('IR/Save', '1');
   }
 
-  void load() {
-    toast("LOADNG!");
-    sendMQTT('IR/Load', '1');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppbar(context, 'Initialize IR Module'),
-      drawer: myDrawer(context),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: StaggeredGridView.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-            children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Center(
-                    child: Text(
-                  'Click a button and send the corresponding signal to the IR Module',
-                  textAlign: TextAlign.center,
-                  textScaleFactor: 1.5,
-                )),
-              ),
-              myIRInitButton(context, 'Power', myarr[0], onButtonPressed, 0),
-              for (int i = 1; i < 10; i++)
-                myIRInitButton(
-                    context, i.toString(), myarr[i], onButtonPressed, i),
-              SizedBox(), //Gap to center 0
-              myIRInitButton(context, '0', myarr[10], onButtonPressed, 10),
-              SizedBox(), //Gap After 0
-              myButton(context, "Save", save),
-              SizedBox(), //Gap Between buttons
-              myButton(context, "Load", load),
-            ],
-            staggeredTiles: generateRandomTiles()),
-      ),
+      body: StaggeredGridView.count(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          crossAxisCount: 3,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+          children: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Center(
+                  child: Text(
+                "Click a button to initialize/override and send a signal to the IR Module.\nDon't forget to save your preset after you're done.",
+                textAlign: TextAlign.center,
+              )),
+            ),
+            myIRInitButton(context, 'Power', myarr[0], onButtonPressed, 0),
+            for (int i = 1; i < 10; i++)
+              myIRInitButton(
+                  context, i.toString(), myarr[i], onButtonPressed, i),
+            SizedBox(), //Gap to center 0
+            myIRInitButton(context, '0', myarr[10], onButtonPressed, 10),
+            SizedBox(height: 50), //Gap After 0
+            myButton(context, "Save", save),
+          ],
+          staggeredTiles: generateRandomTiles()),
     );
   }
 }
