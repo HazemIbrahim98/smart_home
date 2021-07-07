@@ -31,8 +31,7 @@ void initMQTT() async {
     await mqttClient.connect(
         username: brokerUsername, password: brokerPassword);
 
-    subscribe('Gas');
-    subscribe('Pose');
+    subscribe('Mobile/Notification');
   } catch (e) {
     print(e);
     toast("Couldn't connect to Server");
@@ -44,14 +43,8 @@ Future<void> subscribe(String topic) async {
       topic: topic,
       onMessage: (topic, message) {
         if (topic == topic) {
-          if (topic == "Gas") {
-            toast("GAS DETECTED In " + message);
-            pushAlarm(DateTime.now(), true, "Gas Detected");
-          } else {
-            toast("Time to stand!");
-            pushAlarm(DateTime.now(), true,
-                "Stand up and move a little for one minute");
-          }
+          toast(message);
+          pushAlarm(DateTime.now(), true, message);
         }
       });
 }
