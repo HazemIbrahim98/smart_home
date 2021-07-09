@@ -60,7 +60,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
     try {
       int.parse(passwordController.text);
       if (passwordController.text.length != 4) throw Exception();
-      toast(passwordController.text);
+      toast('Password Changed!');
       changePassword(passwordController.text);
     } catch (e) {
       toast("Please Enter A 4 degit Number");
@@ -72,5 +72,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
         topic: "Door/Password",
         message: password,
         qosLevel: MqttQos.exactlyOnce);
+        Navigator.pop(context);
+        
   }
 }
