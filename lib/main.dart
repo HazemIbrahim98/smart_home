@@ -6,6 +6,7 @@ import 'package:smart_home/Door/person.dart';
 import 'package:smart_home/IR/remote_page.dart';
 import 'package:smart_home/IR/init_IR_page.dart';
 import 'package:smart_home/IR/ir_Page.dart';
+import 'package:smart_home/emergency_page.dart';
 
 import 'package:smart_home/home_page.dart';
 import 'package:smart_home/curtains_page.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         'Person Page': (context) => SafeArea(child: PersonPage()),
         'IR Page': (context) => SafeArea(child: IrPage()),
         'Door All Page': (context) => SafeArea(child: DoorAllPage()),
+        'Emergency Page': (context) => SafeArea(child: EmergencyPage()),
         'Change Password Page': (context) =>
             SafeArea(child: ChangePasswordPage()),
       },
