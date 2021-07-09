@@ -13,6 +13,7 @@ class _WebPageState extends State<WebPage> {
   Widget build(BuildContext context) {
     return WebviewScaffold(
       url: serverIP,
+      ignoreSSLErrors: true,
       appBar: new AppBar(
         title: new Text("Home Assistant"),
       ),

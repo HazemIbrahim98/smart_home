@@ -5,7 +5,7 @@ class DoorAllPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppbar(context, "IR Module"),
+      appBar: myAppbar(context, "Door Module"),
       body: ListView(
         children: [
           DrawerHeader(

@@ -6,6 +6,7 @@ import 'package:smart_home/Door/person.dart';
 import 'package:smart_home/IR/remote_page.dart';
 import 'package:smart_home/IR/init_IR_page.dart';
 import 'package:smart_home/IR/ir_Page.dart';
+import 'package:smart_home/emergency_page.dart';
 
 import 'package:smart_home/home_page.dart';
 import 'package:smart_home/curtains_page.dart';
@@ -31,8 +32,7 @@ void initMQTT() async {
     await mqttClient.connect(
         username: brokerUsername, password: brokerPassword);
 
-    subscribe('Gas');
-    subscribe('Pose');
+    subscribe('Mobile/Notification');
   } catch (e) {
     print(e);
     toast("Couldn't connect to Server");
@@ -44,14 +44,8 @@ Future<void> subscribe(String topic) async {
       topic: topic,
       onMessage: (topic, message) {
         if (topic == topic) {
-          if (topic == "Gas") {
-            toast("GAS DETECTED In " + message);
-            pushAlarm(DateTime.now(), true, "Gas Detected");
-          } else {
-            toast("Time to stand!");
-            pushAlarm(DateTime.now(), true,
-                "Stand up and move a little for one minute");
-          }
+          toast(message);
+          pushAlarm(DateTime.now(), true, message);
         }
       });
 }
@@ -80,6 +74,7 @@ class MyApp extends StatelessWidget {
         'Person Page': (context) => SafeArea(child: PersonPage()),
         'IR Page': (context) => SafeArea(child: IrPage()),
         'Door All Page': (context) => SafeArea(child: DoorAllPage()),
+        'Emergency Page': (context) => SafeArea(child: EmergencyPage()),
         'Change Password Page': (context) =>
             SafeArea(child: ChangePasswordPage()),
       },

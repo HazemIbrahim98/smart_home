@@ -44,6 +44,12 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           ListTile(
+            title: Center(child: Text('Emergency')),
+            onTap: () {
+              Navigator.pushNamed(context, 'Emergency Page');
+            },
+          ),
+          ListTile(
             title: Center(child: Text('Home Assistant')),
             onTap: () {
               Navigator.pushNamed(context, 'Webpage');
