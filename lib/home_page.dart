@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/Door/FingerChecker.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,9 +35,12 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             title: Center(child: Text('Front Door')),
             onTap: () {
+              FingerChecker.checkFinger(context).then((value){
+                if(value){
               Navigator.pushNamed(context, 'Door All Page');
-            },
-          ),
+                }
+              });
+            },),
           ListTile(
             title: Center(child: Text('Curtains Control')),
             onTap: () {

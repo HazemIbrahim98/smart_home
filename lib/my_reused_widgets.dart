@@ -194,7 +194,7 @@ void pushAlarm(DateTime scheduledTime, bool alarm, String message) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notify',
       'alarm_notify',
-      'Channel for Alarm notification',
+      'Channel for Alarm',
       importance: Importance.max,
       icon: 'alert',
       sound: RawResourceAndroidNotificationSound('alert'),
@@ -218,7 +218,7 @@ void pushAlarm(DateTime scheduledTime, bool alarm, String message) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
-      'Channel for Alarm notification',
+      'Channel for Alarm',
       importance: Importance.high,
       icon: 'logo_black',
       sound: RawResourceAndroidNotificationSound('alarm'),

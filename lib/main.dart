@@ -51,8 +51,8 @@ Future<void> subscribe(String topic) async {
 }
 
 void main() {
-  runApp(MyApp());
   initMQTT();
+  runApp(MyApp());  
 }
 
 class MyApp extends StatelessWidget {
