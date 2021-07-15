@@ -26,7 +26,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   Future fromMapCall() async {
     LocationResult result = await showLocationPicker(
       context,
-      'AIzaSyDMssyFpTLFdGidbTtYp5IcR4TQRTWRGuk',
+      '',
       initialCenter: LatLng(30.023178, 31.446410),
       automaticallyAnimateToCurrentLocation: true,
       myLocationButtonEnabled: true,
