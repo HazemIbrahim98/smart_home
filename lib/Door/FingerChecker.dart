@@ -20,8 +20,8 @@ class FingerChecker {
             toast("Approved");
             return true;
           }
-        }
-        else return true;
+        } else
+          return true;
       } on PlatformException catch (e) {
         if (e.code == auth_error.lockedOut) {
           toast("Not Approaved, Please wait 10 seconds before trying again");
@@ -29,5 +29,6 @@ class FingerChecker {
         }
       }
     }
+    return false;
   }
 }

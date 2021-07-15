@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:smart_home/API_Keys.dart';
 import 'package:smart_home/my_reused_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
@@ -27,7 +26,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   Future fromMapCall() async {
     LocationResult result = await showLocationPicker(
       context,
-      GMAPS_API,
+      'MAPS_API_KEY',
       initialCenter: LatLng(30.023178, 31.446410),
       automaticallyAnimateToCurrentLocation: true,
       myLocationButtonEnabled: true,
@@ -48,7 +47,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
   Future toMapCall() async {
     LocationResult result = await showLocationPicker(
       context,
-      GMAPS_API,
+      'MAPS_API_KEY',
       initialCenter: LatLng(30.023178, 31.446410),
       automaticallyAnimateToCurrentLocation: true,
       myLocationButtonEnabled: true,
@@ -77,7 +76,7 @@ class _DynamicAlarmPageState extends State<DynamicAlarmPage> {
               toPlaceID +
               "&mode=driving&departure_time=" +
               parsedDate.toString() +
-              "&key=" + GMAPS_API);
+              "&key=" + 'MAPS_API_KEY');
       print(url);
       Uri apiurl = Uri.parse(url);
       http.Response obj = await http.get(apiurl);

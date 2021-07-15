@@ -61,7 +61,7 @@
             android:value="2" />
         <meta-data 
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="MAPS_API_KEY" />
             <service
                 android:name="io.flutter.plugins.androidalarmmanager.AlarmService"
                 android:permission="android.permission.BIND_JOB_SERVICE"

@@ -58,7 +58,7 @@ class _InfraredPageState extends State<InfraredPage> {
     return false;
   }
 
-  bool sendMQTT(_topic, _message) {
+  void sendMQTT(_topic, _message) {
     mqttClient.publishMessage(
         topic: _topic, message: _message, qosLevel: MqttQos.exactlyOnce);
   }
