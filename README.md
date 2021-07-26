@@ -1,5 +1,5 @@
 # smart_home
-A movbile app to compliment the project https://github.com/HazemMohamed98/Final-Project
+A mobile app to compliment the project https://github.com/HazemMohamed98/Final-Project
 
 ## Getting Started
 Run the app with flutter and don't forget maps API
